@@ -1,0 +1,13 @@
+backend/Nessaj.Api/bin/
+backend/Nessaj.Api/obj/
+backend/Nessaj.Api/appsettings.json
+backend/Nessaj.Api/appsettings.Development.json
+*.user
+.vs/
+
+frontend/nessaj-web/node_modules/
+frontend/nessaj-web/dist/
+frontend/nessaj-web/.env
+
+.DS_Store
+Thumbs.db
