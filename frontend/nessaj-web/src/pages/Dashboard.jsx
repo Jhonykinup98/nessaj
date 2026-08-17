@@ -3,7 +3,7 @@ import {
   PieChart, Pie, Cell, ResponsiveContainer, Tooltip,
   BarChart, Bar, XAxis, YAxis, CartesianGrid
 } from 'recharts'
-import Sidebar from '../components/Sidebar'
+import Navbar from '../components/Navbar'
 import { getDashboardSummary } from '../services/api'
 
 const STATUS_LABELS = {
@@ -43,10 +43,10 @@ export default function Dashboard() {
 
   return (
     <div className="app-shell">
-      <Sidebar />
+      <Navbar />
       <main className="main-content">
         <h1 className="page-title">Dashboard</h1>
-        <p className="page-subtitle">Visão geral dos projetos e indicadores</p>
+        <p className="page-subtitle">Visão Geral</p>
 
         {loading && <p>Carregando indicadores...</p>}
 

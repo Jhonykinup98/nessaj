@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import Sidebar from '../components/Sidebar'
+import Navbar from '../components/Navbar'
 import FormInput from '../components/FormInput'
 import { useAuth } from '../context/AuthContext'
 import { getProjects, createProject } from '../services/api'
@@ -53,7 +53,7 @@ export default function Projects() {
 
   return (
     <div className="app-shell">
-      <Sidebar />
+      <Navbar />
       <main className="main-content">
         <div className="card-header">
           <div>

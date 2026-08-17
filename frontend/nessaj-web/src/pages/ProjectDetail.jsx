@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import Sidebar from '../components/Sidebar'
+import Navbar from '../components/Navbar'
 import FormInput from '../components/FormInput'
 import { getProject, getTasks, createTask, updateTask } from '../services/api'
 
@@ -46,7 +46,7 @@ export default function ProjectDetail() {
 
   return (
     <div className="app-shell">
-      <Sidebar />
+      <Navbar />
       <main className="main-content">
         <Link to="/projetos" style={{ color: 'var(--ink-muted)', fontSize: '0.9rem' }}>← Voltar para projetos</Link>
 
