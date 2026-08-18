@@ -42,7 +42,6 @@ public class ProjectsController : ControllerBase
             project.Priority, project.StartDate, project.Deadline, project.ProgressPercent,
             project.BudgetPlanned, project.BudgetActual, project.Tasks.Count));
     }
-
     [HttpPost]
     public async Task<IActionResult> CreateProject(CreateProjectRequest request)
     {
@@ -55,11 +54,14 @@ public class ProjectsController : ControllerBase
             ClientArea = request.ClientArea,
             Status = request.Status,
             Priority = request.Priority,
-            StartDate = request.StartDate,
-            Deadline = request.Deadline,
+            StartDate = DateTime.SpecifyKind(request.StartDate, DateTimeKind.Utc),
+            Deadline = request.Deadline.HasValue
+                ? DateTime.SpecifyKind(request.Deadline.Value, DateTimeKind.Utc)
+                : null,
             ProgressPercent = request.ProgressPercent,
             BudgetPlanned = request.BudgetPlanned,
-            BudgetActual = request.BudgetActual
+            BudgetActual = request.BudgetActual,
+            CreatedAt = DateTime.UtcNow 
         };
 
         _db.Projects.Add(project);

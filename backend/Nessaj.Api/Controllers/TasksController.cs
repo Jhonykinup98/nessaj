@@ -46,7 +46,9 @@ public class TasksController : ControllerBase
             Status = request.Status,
             AssignedTo = request.AssignedTo,
             Priority = request.Priority,
-            Deadline = request.Deadline
+            Deadline = request.Deadline.HasValue
+                ? DateTime.SpecifyKind(request.Deadline.Value, DateTimeKind.Utc)
+                : null
         };
 
         _db.Tasks.Add(task);
@@ -68,7 +70,9 @@ public class TasksController : ControllerBase
         task.Status = request.Status;
         task.AssignedTo = request.AssignedTo;
         task.Priority = request.Priority;
-        task.Deadline = request.Deadline;
+        task.Deadline = request.Deadline.HasValue
+            ? DateTime.SpecifyKind(request.Deadline.Value, DateTimeKind.Utc)
+            : null;
 
         await _db.SaveChangesAsync();
         return Ok(new { message = "Tarefa atualizada." });
