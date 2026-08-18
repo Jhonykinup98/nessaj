@@ -22,23 +22,26 @@ export default function Projects() {
   const { user } = useAuth()
   const canManage = user?.role === 'admin' || user?.role === 'gestor'
 
-  const [projects, setProjects] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [showForm, setShowForm] = useState(false)
-  const [form, setForm] = useState(emptyForm)
+ const [projects, setProjects] = useState([])
+const [loading, setLoading] = useState(true)
+const [showForm, setShowForm] = useState(false)
+const [form, setForm] = useState(emptyForm)
+const [error, setError] = useState('')
 
-  function loadProjects() {
-    getProjects().then(({ data }) => setProjects(data)).finally(() => setLoading(false))
-  }
+function loadProjects() {
+  getProjects().then(({ data }) => setProjects(data)).finally(() => setLoading(false))
+}
 
-  useEffect(() => { loadProjects() }, [])
+useEffect(() => { loadProjects() }, [])
 
-  function update(field) {
-    return (e) => setForm({ ...form, [field]: e.target.value })
-  }
+function update(field) {
+  return (e) => setForm({ ...form, [field]: e.target.value })
+}
 
-  async function handleCreate(e) {
-    e.preventDefault()
+async function handleCreate(e) {
+  e.preventDefault()
+  setError('')
+  try {
     await createProject({
       ...form,
       progressPercent: Number(form.progressPercent),
@@ -49,7 +52,10 @@ export default function Projects() {
     setForm(emptyForm)
     setShowForm(false)
     loadProjects()
+  } catch (err) {
+    setError(err.response?.data?.message || 'Erro ao criar o projeto.')
   }
+}
 
   return (
     <div className="app-shell">
@@ -98,7 +104,10 @@ export default function Projects() {
               <FormInput label="% concluído" type="number" value={form.progressPercent} onChange={update('progressPercent')} />
               <FormInput label="Orçamento previsto" type="number" value={form.budgetPlanned} onChange={update('budgetPlanned')} required={false} />
               <FormInput label="Orçamento realizado" type="number" value={form.budgetActual} onChange={update('budgetActual')} required={false} />
+              
 
+              
+              {error && <p className="error-text">{error}</p>}
               <button type="submit" className="btn-primary">Salvar projeto</button>
             </form>
           </div>

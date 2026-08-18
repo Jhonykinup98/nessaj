@@ -19,6 +19,7 @@ export default function ProjectDetail() {
   const [tasks, setTasks] = useState([])
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState(emptyForm)
+  const [error, setError] = useState('')
 
   function load() {
     getProject(id).then(({ data }) => setProject(data))
@@ -33,15 +34,25 @@ export default function ProjectDetail() {
 
   async function handleCreate(e) {
     e.preventDefault()
-    await createTask({ ...form, projectId: id, deadline: form.deadline || null })
-    setForm(emptyForm)
-    setShowForm(false)
-    load()
+    setError('')
+    try {
+      await createTask({ ...form, projectId: id, deadline: form.deadline || null })
+      setForm(emptyForm)
+      setShowForm(false)
+      load()
+    } catch (err) {
+      setError(err.response?.data?.message || 'Erro ao criar a tarefa.')
+    }
   }
 
   async function handleStatusChange(task, newStatus) {
-    await updateTask(task.id, { ...task, status: newStatus })
-    load()
+    setError('')
+    try {
+      await updateTask(task.id, { ...task, status: newStatus })
+      load()
+    } catch (err) {
+      setError(err.response?.data?.message || 'Erro ao atualizar a tarefa.')
+    }
   }
 
   return (
@@ -60,11 +71,13 @@ export default function ProjectDetail() {
         )}
 
         <div className="card-header">
-          <h3 style={{ margin: 0 }}>Tarefas</h3>
-          <button className="btn-primary" onClick={() => setShowForm(!showForm)}>
-            {showForm ? 'Cancelar' : '+ Nova tarefa'}
-          </button>
-        </div>
+        <h3 style={{ margin: 0 }}>Tarefas</h3>
+        <button className="btn-primary" onClick={() => setShowForm(!showForm)}>
+          {showForm ? 'Cancelar' : '+ Nova tarefa'}
+        </button>
+      </div>
+
+      {error && <p className="error-text">{error}</p>}
 
         {showForm && (
           <div className="card">
